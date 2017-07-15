@@ -4,6 +4,7 @@ import "./ECVerify.sol";
 contract StoreData {
   // state
   
+
   mapping (address => bytes32[]) private shaValues;
   
   // bytes32[] private shaValues;

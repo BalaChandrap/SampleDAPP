@@ -1,6 +1,7 @@
 var accounts;
 var account;
 var strData;
+var pt;
 
 function setStatus(message) {
   var status = document.getElementById("status");
@@ -15,17 +16,7 @@ function setStatus3(message) {
   status.innerHTML = message;
 };
 
-function refreshBalance() {
-  var meta = MetaCoin.deployed();
 
-  meta.getBalance.call(account, {from: account}).then(function(value) {
-    var balance_element = document.getElementById("balance");
-    balance_element.innerHTML = value.valueOf();
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error getting balance; see log.");
-  });
-};
 
 function check() {
 	var strData1 = StoreData.deployed();
@@ -65,112 +56,8 @@ function check() {
 	  console.log("Error!",error);
 	   setStatus("error"+response);
   }
-);
-  
-	
+);	
 }
-
-
-
-// function check3() {
-// 	var strData2 = StoreData.deployed();
-//
-// 	//var response = true;
-//
-// 	var account2 = '0xa23a2c069fef74ef212e2f8f300aedae4c8f8abb';
-//
-//   strData2.checkIdentifier('hello12345',account2).then(function(response) {
-// 	  console.log("success!",response);
-//
-// 	  var temp = response;
-//
-// 	  setStatus3("Account is "+account);
-//
-// 	   setStatus1("outside if and response is "+response+" and temp is "+temp);
-//
-// 	  if(temp == true)
-// 	  {
-// 	  	setStatus("Good! You have license.");
-// 	  }
-// 	  else
-// 	  {
-// 	  	setStatus("You need to buy license.");
-// 	  }
-//
-//
-//   },function(error){
-// 	  console.log("Error!",error);
-// 	   setStatus("error"+response);
-//   }
-// );
-//
-//
-// };
-
-// function buy() {
-// 	setStatus("Buying please wait.");
-// 	//var strData = StoreData.deployed();
-//
-// 	setStatus3("Account is "+account);
-//
-// 	//strData.store('hello123',0x8e3772675ae80ebb2719b64502a2db74e508fea5);
-//
-//     strData.store('hello12345',account,{from: account}).then(function(response) {
-//   	  console.log("success!",response);
-//   	   setStatus("Successfully bought "+response);
-//
-//     },function(error){
-//   	  console.log("Error!",error);
-//   	   setStatus("error"+response);
-//     }
-//   );
-// };
-
-
-
-// function check1() {
-// 	//var strData = StoreData.deployed();
-//
-// 	//var response = true;
-//
-// 	setStatus("Entered the check block");
-//
-// 	var tempAccount = document.getElementById("account2").value.toString();
-//
-// 	//var tempAccount = '0xa23a2c069fef74ef212e2f8f300aedae4c8f8abb';
-//
-// 	var tempString = document.getElementById("identifier2").value;
-//
-// 	setStatus("Verifying. Please wait.."+tempAccount);
-//
-//   strData.checkIdentifier(tempString,tempAccount).then(function(response) {
-// 	  console.log("success!",response);
-//
-// 	  var temp = response;
-//
-// 	  //setStatus3("Account is "+account);
-//
-// 	   setStatus1("outside if and response is "+tempString+" and account is "+tempAccount);
-//
-// 	  if(temp == true)
-// 	  {
-// 	  	setStatus("Identifier verified successfully.");
-// 	  }
-// 	  else
-// 	  {
-// 	  	setStatus("Identifier not found.");
-// 	  }
-//
-//
-//   },function(error){
-// 	  console.log("Error!",error);
-// 	   setStatus("error"+response);
-//   }
-// );
-//
-//
-// };
-
 
 
 function store() {
@@ -183,11 +70,11 @@ function store() {
 	
 //	var tempString = document.getElementById("identifier2").value;
 
-  var tempAccount = "0xce6d018f78c5ef95cb776005e8c8386e2268f6a4";
+  var tempAccount = "0x458cadeeb81925fd620d599baf4bbdeea2889815";
 	
 	var tempString = "hello";
 
-  var result = web3.eth.sign("0xce6d018f78c5ef95cb776005e8c8386e2268f6a4",web3.sha3("hello")); 
+  var result = web3.eth.sign("0x458cadeeb81925fd620d599baf4bbdeea2889815",web3.sha3("hello")); 
   console.log(result);
 	setStatus1(result);
 
@@ -208,23 +95,6 @@ function store() {
   );
 };
 
-function sendCoin() {
-  var meta = MetaCoin.deployed();
-
-  var amount = parseInt(document.getElementById("amount").value);
-  var receiver = document.getElementById("receiver").value;
-
-  setStatus("Initiating transaction... (please wait)");
-
-  meta.sendCoin(receiver, amount, {from: account}).then(function() {
-    setStatus("Transaction complete!");
-    refreshBalance();
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error sending coin; see log.");
-  });
-};
-
 window.onload = function() {
   web3.eth.getAccounts(function(err, accs) {
     if (err != null) {
@@ -240,7 +110,44 @@ window.onload = function() {
     accounts = accs;
     account = accounts[0];
 	strData = StoreData.deployed();
-
-   // refreshBalance();
+  pt = Patient.deployed();
   });
+}
+
+
+
+function addResource()
+{
+
+    var data = "Hi, I am a patient";
+    var owner = "0x458cadeeb81925fd620d599baf4bbdeea2889815";
+
+
+     pt.addData(data,owner,{from: owner}).then(function(response) {
+  	  console.log("success!",response);
+      alert(response);
+  	   setStatus("Successfully stored "+data);
+     	setStatus2(response);
+    },function(error){
+  	  console.log("Error!",error);
+      alert("error"+response);
+  	   setStatus("error"+response);
+    }
+  );
+
+}
+
+function getResource()
+{
+   alert("clicked");
+    var owner = "0x458cadeeb81925fd620d599baf4bbdeea2889815";
+      pt.getData(owner,{from: owner}).then(function(response) {
+  	  console.log("success!",response);
+      alert(response);
+  	   setStatus("Successfully got "+response);
+    },function(error){
+  	  console.log("Error!",error);
+  	   setStatus("error"+response);
+    }
+  );
 }
