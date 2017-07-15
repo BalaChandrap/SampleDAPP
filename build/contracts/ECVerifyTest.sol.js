@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("ProofOfExistence1 error: Please call setProvider() first before calling new().");
+      throw new Error("ECVerifyTest error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("ProofOfExistence1 error: contract binary not set. Can't deploy new instance.");
+      throw new Error("ECVerifyTest error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("ProofOfExistence1 contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of ProofOfExistence1: " + unlinked_libraries);
+      throw new Error("ECVerifyTest contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of ECVerifyTest: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to ProofOfExistence1.at(): " + address);
+      throw new Error("Invalid address passed to ECVerifyTest.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: ProofOfExistence1 not deployed or address not set.");
+      throw new Error("Cannot find deployed address: ECVerifyTest not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -351,51 +351,35 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     "abi": [
       {
         "constant": false,
-        "inputs": [
-          {
-            "name": "document",
-            "type": "string"
-          }
-        ],
-        "name": "notarize",
-        "outputs": [],
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "document",
-            "type": "string"
-          }
-        ],
-        "name": "calculateProof",
-        "outputs": [
-          {
-            "name": "",
-            "type": "bytes32"
-          }
-        ],
-        "type": "function"
-      },
-      {
-        "constant": true,
         "inputs": [],
-        "name": "proof",
+        "name": "test_v0",
         "outputs": [
           {
             "name": "",
-            "type": "bytes32"
+            "type": "bool"
+          }
+        ],
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "test_v1",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
           }
         ],
         "type": "function"
       }
     ],
-    "unlinked_binary": "0x6060604052610142806100126000396000f3606060405260e060020a60003504637183616c811461003157806376dbd10814610084578063faf924cf14610121575b005b61002f6004808035906020019082018035906020019191908080601f0160208091040260200160405190810160405280939291908181526020018383808284375094965050505050505061013c816100cf565b61012a6004808035906020019082018035906020019191908080601f016020809104026020016040519081016040528093929190818152602001838380828437509496505050505050505b6000600282604051808280519060200190808383829060006004602084601f0104600302600f01f1509050019150506020604051808303816000866161da5a03f1156100025750506040515192915050565b61012a60005481565b60408051918252519081900360200190f35b6000555056",
+    "unlinked_binary": "0x606060405261033e806100126000396000f3606060405260e060020a6000350463aa4b4d0b8114610026578063fe8190ce146101a7575b005b61032a6000600060206040519081016040528060008152602001507f47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad6001029150608060405190810160405280604181526020017faca7da997ad177f040240cdccf6905b71ab16b74434388c3a72f34fd25d6439381526020017f46b2bac274ff29b48b3ea6e2d04c1336eaceafda3c53ab483fc3ff12fac3ebf281526020016000815260200150905073__ECVerify______________________________6339cdde328383730e5cb767cce09a7f3ca594df118aa519be5e2b5a6040518460e060020a0281526004018084600019168152602001806020018381526020018281038252848181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f16801561017d5780820380516001836020036101000a031916815260200191505b509450505050506020604051808303818660325a03f415610002575050604051519350505b505090565b61032a6000600060206040519081016040528060008152602001507f47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad6001029150608060405190810160405280604181526020017fdebaaa0cddb321b2dcaaf846d39605de7b97e77ba6106587855b9106cb10421581526020017f61a22d94fa8b8a687ff9c911c844d1c016d1a685a9166858f9c7c1bc85128aca815260200160f860020a815260200150905073__ECVerify______________________________6339cdde328383738743523d96a1b2cbe0c6909653a56da18ed484af6040518460e060020a0281526004018084600019168152602001806020018381526020018281038252848181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f16801561017d5780820380516001836020036101000a03191681526020019150509450505050506020604051808303818660325a03f4156100025750506040515193506101a29050565b604080519115158252519081900360200190f3",
     "events": {},
-    "updated_at": 1500105284126,
-    "links": {},
-    "address": "0x30bcc7b69db869f6e3f81c21b5f4ddf356a870cf"
+    "updated_at": 1500105570937,
+    "links": {
+      "ECVerify": "0x2440ffcc2d27584d428637be960a7769ad94bd9a"
+    }
   }
 };
 
@@ -480,7 +464,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "ProofOfExistence1";
+  Contract.contract_name   = Contract.prototype.contract_name   = "ECVerifyTest";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -520,6 +504,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.ProofOfExistence1 = Contract;
+    window.ECVerifyTest = Contract;
   }
 })();

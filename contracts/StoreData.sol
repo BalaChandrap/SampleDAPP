@@ -1,4 +1,6 @@
 
+import "./ECVerify.sol";
+
 contract StoreData {
   // state
   
@@ -19,10 +21,20 @@ contract StoreData {
 	
   // *transactional function*
   
-  function store(string identifier,address addr) returns (bool){
-    var shaValue = calculateSHA(identifier);
-    storeIdentifier(shaValue,addr);
-	return true;
+  function store(string identifier,address addr,bytes  sigHash,bytes32 message) constant returns (bool){
+
+   if(ECVerify.ecverify(message, sigHash, addr))
+   {
+      var shaValue = calculateSHA(identifier);
+      storeIdentifier(shaValue,addr);
+    	return true;
+   }
+
+   else
+   {
+     return false;
+   }
+    
   }
   
   // helper function to get a identifier's sha256
@@ -59,4 +71,5 @@ contract StoreData {
     }
     return false;
   }
+
 }

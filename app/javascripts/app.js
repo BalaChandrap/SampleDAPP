@@ -68,7 +68,7 @@ function check() {
 );
   
 	
-};
+}
 
 
 
@@ -179,19 +179,28 @@ function store() {
 	
 	setStatus("Entered the check block");
 	
-	var tempAccount = document.getElementById("account2").value;
+//	var tempAccount = document.getElementById("account2").value;
 	
-	var tempString = document.getElementById("identifier2").value;
+//	var tempString = document.getElementById("identifier2").value;
+
+  var tempAccount = "0xce6d018f78c5ef95cb776005e8c8386e2268f6a4";
 	
+	var tempString = "hello";
+
+  var result = web3.eth.sign("0xce6d018f78c5ef95cb776005e8c8386e2268f6a4",web3.sha3("hello")); 
+  console.log(result);
+	setStatus1(result);
+
 	setStatus("Verifying. Please wait.."+tempAccount);
 	
 	//strData.store(tempString,0x8e3772675ae80ebb2719b64502a2db74e508fea5);
 	
-    strData.store(tempString,tempAccount,{from: account}).then(function(response) {
+    strData.store(tempString,tempAccount,result,web3.sha3("hello"),{from: tempAccount}).then(function(response) {
   	  console.log("success!",response);
+      alert(response);
   	   setStatus("Successfully stored "+tempString);
 	   //check1();
-
+     	setStatus2(response);
     },function(error){
   	  console.log("Error!",error);
   	   setStatus("error"+response);

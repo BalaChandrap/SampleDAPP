@@ -231,13 +231,13 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.new = function() {
     if (this.currentProvider == null) {
-      throw new Error("ProofOfExistence1 error: Please call setProvider() first before calling new().");
+      throw new Error("ECVerify error: Please call setProvider() first before calling new().");
     }
 
     var args = Array.prototype.slice.call(arguments);
 
     if (!this.unlinked_binary) {
-      throw new Error("ProofOfExistence1 error: contract binary not set. Can't deploy new instance.");
+      throw new Error("ECVerify error: contract binary not set. Can't deploy new instance.");
     }
 
     var regex = /__[^_]+_+/g;
@@ -256,7 +256,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         return name != arr[index + 1];
       }).join(", ");
 
-      throw new Error("ProofOfExistence1 contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of ProofOfExistence1: " + unlinked_libraries);
+      throw new Error("ECVerify contains unresolved libraries. You must deploy and link the following libraries before you can deploy a new version of ECVerify: " + unlinked_libraries);
     }
 
     var self = this;
@@ -297,7 +297,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.at = function(address) {
     if (address == null || typeof address != "string" || address.length != 42) {
-      throw new Error("Invalid address passed to ProofOfExistence1.at(): " + address);
+      throw new Error("Invalid address passed to ECVerify.at(): " + address);
     }
 
     var contract_class = this.web3.eth.contract(this.abi);
@@ -308,7 +308,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
 
   Contract.deployed = function() {
     if (!this.address) {
-      throw new Error("Cannot find deployed address: ProofOfExistence1 not deployed or address not set.");
+      throw new Error("Cannot find deployed address: ECVerify not deployed or address not set.");
     }
 
     return this.at(this.address);
@@ -353,49 +353,58 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "constant": false,
         "inputs": [
           {
-            "name": "document",
-            "type": "string"
+            "name": "hash",
+            "type": "bytes32"
+          },
+          {
+            "name": "sig",
+            "type": "bytes"
+          },
+          {
+            "name": "signer",
+            "type": "address"
           }
         ],
-        "name": "notarize",
-        "outputs": [],
+        "name": "ecverify",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
         "type": "function"
       },
       {
-        "constant": true,
+        "constant": false,
         "inputs": [
           {
-            "name": "document",
-            "type": "string"
+            "name": "hash",
+            "type": "bytes32"
+          },
+          {
+            "name": "sig",
+            "type": "bytes"
           }
         ],
-        "name": "calculateProof",
+        "name": "ecrecovery",
         "outputs": [
           {
             "name": "",
-            "type": "bytes32"
-          }
-        ],
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "proof",
-        "outputs": [
+            "type": "bool"
+          },
           {
             "name": "",
-            "type": "bytes32"
+            "type": "address"
           }
         ],
         "type": "function"
       }
     ],
-    "unlinked_binary": "0x6060604052610142806100126000396000f3606060405260e060020a60003504637183616c811461003157806376dbd10814610084578063faf924cf14610121575b005b61002f6004808035906020019082018035906020019191908080601f0160208091040260200160405190810160405280939291908181526020018383808284375094965050505050505061013c816100cf565b61012a6004808035906020019082018035906020019191908080601f016020809104026020016040519081016040528093929190818152602001838380828437509496505050505050505b6000600282604051808280519060200190808383829060006004602084601f0104600302600f01f1509050019150506020604051808303816000866161da5a03f1156100025750506040515192915050565b61012a60005481565b60408051918252519081900360200190f35b6000555056",
+    "unlinked_binary": "0x606060405261020b806100126000396000f36503063fc68da550606060405260e060020a600035046339cdde32811461003157806377d32e941461008c575b610007565b60408051602060046024803582810135601f81018590048502860185019096528585526100f79583359593946044949392909201918190840183828082843750949650509335935050505060006000600061012f86866100d6565b60408051602060046024803582810135601f810185900485028601850190965285855261010b95833595939460449493929092019181908401838280828437509496505050505050505b60006000600060006000855160411415156101705760009450849350610166565b604080519115158252519081900360200190f35b604080519215158352600160a060020a039190911660208301528051918290030190f35b90925090508115156001148015610157575083600160a060020a031681600160a060020a0316145b9695505050505050565b945094505b5050509250929050565b50505060208301516040840151606085015160001a601b60ff8216101561019557601b015b8060ff16601b141580156101ad57508060ff16601c14155b156101be5760009450849350610166565b61016187828585600060006000600060405188815287602082015286604082015285606082015260208160808360006001610bb8f19250805191505081819350935050509450949250505056",
     "events": {},
-    "updated_at": 1500105284126,
+    "updated_at": 1500105570933,
     "links": {},
-    "address": "0x30bcc7b69db869f6e3f81c21b5f4ddf356a870cf"
+    "address": "0x2440ffcc2d27584d428637be960a7769ad94bd9a"
   }
 };
 
@@ -480,7 +489,7 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     Contract.links[name] = address;
   };
 
-  Contract.contract_name   = Contract.prototype.contract_name   = "ProofOfExistence1";
+  Contract.contract_name   = Contract.prototype.contract_name   = "ECVerify";
   Contract.generated_with  = Contract.prototype.generated_with  = "3.2.0";
 
   // Allow people to opt-in to breaking changes now.
@@ -520,6 +529,6 @@ var SolidityEvent = require("web3/lib/web3/event.js");
   } else {
     // There will only be one version of this contract in the browser,
     // and we can use that.
-    window.ProofOfExistence1 = Contract;
+    window.ECVerify = Contract;
   }
 })();
